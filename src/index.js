@@ -17,7 +17,7 @@ const gameSaveFiles = "FactoryGame/Saved/SaveGames"
 const pathToSyncedSave = "../Saved/SaveGames"
 
 const pathToWatch = path.join(local, gameSaveFiles);
-const pathToSave = path.join(__dirname, '..', 'Saved', 'SaveGames')
+const pathToSave = path.join(__dirname, '..')
 const pathToPerson = path.join(pathToSave, otherSaveFolder);
 log(pathToPerson)
 
@@ -43,7 +43,10 @@ watcher
 
 function addDir(changedPath) {
     log(`Addition detected: Folder ${changedPath} has been added`);
+    let otherPlayer = getPathToOtherPlayer(changedPath);
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
+    const pathToTargetOtherPlayer = path.join(pathToRepo, convertToTargetPath(otherPlayer))
+
     log('Attempting to copy over to ' + pathToTarget);
 
     fs.cpSync(changedPath, pathToTarget, {recursive: true});
@@ -52,18 +55,25 @@ function addDir(changedPath) {
 
 function addFile(changedPath) {
     log(`Addition detected: File ${changedPath} has been added`);
+    const filename = path.basename(changedPath);
+    let otherPlayer = getPathToOtherPlayer(changedPath);
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
+    const pathToTargetOtherPlayer = path.join(pathToWatch, otherSaveFolder, filename)
+    log("also copy to " + pathToTargetOtherPlayer);
     log('Attempting to copy over to ' + pathToTarget);
-    syncBetweenPlayerFolders(changedPath);
     fs.closeSync(fs.openSync(pathToTarget, 'w'));
+    fs.closeSync(fs.openSync(pathToTargetOtherPlayer, 'w'));
 
     fs.copyFileSync(changedPath, pathToTarget)
-    syncChanges()
+    fs.copyFileSync(changedPath, pathToTargetOtherPlayer)
 }
 
 function fileChange(changedPath) {
     log(`Change detected: File ${changedPath} has been changed`);
+    let otherPlayer = getPathToOtherPlayer(changedPath);
+
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
+    const pathToTargetOtherPlayer = path.join(pathToRepo, convertToTargetPath(otherPlayer))
     log('Attempting to copy over to ' + pathToTarget);
 
     fs.copyFileSync(changedPath, pathToTarget)
@@ -83,7 +93,7 @@ function getParentPath(str) {
     return str.substring(0, str.lastIndexOf("/"));
 }
 
-function syncBetweenPlayerFolders(originalPath) {
+function getPathToOtherPlayer(originalPath) {
     let filename = path.basename(originalPath);
     let splitPath = path.dirname(originalPath).split('\\')
     splitPath.pop();
@@ -92,11 +102,6 @@ function syncBetweenPlayerFolders(originalPath) {
     let resolvePath = splitPath.join("\\")
     log(resolvePath)
     return resolvePath;
-}
-
-function getOtherPlayersFolder(originalPath) {
-
-
 }
 
 async function syncChanges() {
