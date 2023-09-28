@@ -85,7 +85,7 @@ function getParentPath(str) {
 
 function syncBetweenPlayerFolders(originalPath) {
     let filename = path.basename(originalPath);
-    let splitPath = path.dirname(originalPath).split('\\').pop();
+    let splitPath = path.dirname(originalPath).split('\\')
     log(splitPath)
 }
 
