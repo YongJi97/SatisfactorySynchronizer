@@ -37,7 +37,7 @@ simpleGit.pull();
 
 watcher
 .on('ready', () => log('Initial scan complete. Ready for changes'))
-.on('addDir', path => addDir(path))
+// .on('addDir', path => addDir(path))
 .on('change', path => fileChange(path))
 .on('add', path => addFile(path))
 .on('error', error => log(`Watcher error: ${error}`))
