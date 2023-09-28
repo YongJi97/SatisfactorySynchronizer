@@ -128,8 +128,7 @@ async function syncChanges() {
 
 async function gitPull() {
     log("Syncing any changes from other players");
-    await simpleGit.fetch();
-    await simpleGit.rebase();
+    await simpleGit.pull();
     log('Syncing from the cloud complete');
 }
 
