@@ -1,6 +1,9 @@
 const chokidar = require('chokidar');
 const fs = require('fs');
 const path = require('path');
+const simpleGit = require('simple-git')();
+simpleGit().clean(simpleGit.CleanOptions.FORCE);
+
 const log = console.log.bind(console);
 
 let local = process.env.LOCALAPPDATA
@@ -65,4 +68,11 @@ function convertToTargetPath(relativePath) {
 
 function getParentPath(str) {
     return str.substring(0, str.lastIndexOf("/"));
+}
+
+function syncChanges() {
+    simpleGit
+        .add('../.')
+        .commit("sync")
+        .push('origin', 'master');
 }
