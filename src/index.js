@@ -8,7 +8,7 @@ const yongji = '76561198214145843';
 const kevin = '76561198083081162';
 const machineID = path.basename(os.homedir());
 
-const saveFolder = machineID.toLowerCase() === 'kisuna' ? yongji : kevin;
+const otherSaveFolder = machineID.toLowerCase() === 'kisuna' ? yongji : kevin;
 
 const log = console.log.bind(console);
 
@@ -18,7 +18,7 @@ const pathToSyncedSave = "../Saved/SaveGames"
 
 const pathToWatch = path.join(local, gameSaveFiles);
 const pathToSave = path.join(__dirname, '..', 'Saved', 'SaveGames')
-const pathToPerson = path.join(pathToSave, saveFolder);
+const pathToPerson = path.join(pathToSave, otherSaveFolder);
 log(pathToPerson)
 
 const pathToRepo = path.join(local, 'FactoryGame', 'SatisfactorySynchronizer')
@@ -87,6 +87,7 @@ function syncBetweenPlayerFolders(originalPath) {
     let filename = path.basename(originalPath);
     let splitPath = path.dirname(originalPath).split('\\')
     splitPath.pop();
+    splitPath.push(otherSaveFolder);
     log(splitPath)
 }
 
