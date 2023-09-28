@@ -2,6 +2,13 @@ const chokidar = require('chokidar');
 const fs = require('fs');
 const path = require('path');
 const simpleGit = require('simple-git')();
+const os = require('os');
+
+const yongji = '76561198214145843';
+const kevin = '76561198083081162';
+const machineID = path.basename(os.homedir());
+
+const saveFolder = machineID.toLowerCase() === 'kisuna' ? yongji : kevin;
 
 const log = console.log.bind(console);
 
@@ -11,6 +18,8 @@ const pathToSyncedSave = "../Saved/SaveGames"
 
 const pathToWatch = path.join(local, gameSaveFiles);
 const pathToSave = path.join(__dirname, '..', 'Saved', 'SaveGames')
+const pathToPerson = path.join(pathToSave, saveFolder);
+log(pathToPerson)
 
 const pathToRepo = path.join(local, 'FactoryGame', 'SatisfactorySynchronizer')
 const watcher = chokidar.watch(pathToWatch, {
@@ -72,6 +81,10 @@ function convertToTargetPath(relativePath) {
 
 function getParentPath(str) {
     return str.substring(0, str.lastIndexOf("/"));
+}
+
+function syncBetweenPlayerFolders() {
+
 }
 
 async function syncChanges() {
