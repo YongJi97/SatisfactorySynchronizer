@@ -73,6 +73,7 @@ function getParentPath(str) {
 }
 
 async function syncChanges() {
+    log('Syncing changes to github')
     await simpleGit
         .add('../.')
         .commit("sync")
