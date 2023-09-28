@@ -34,6 +34,7 @@ const watcher = chokidar.watch(pathToWatch, {
 console.log("Syncing any changes from other players");
 simpleGit.pull();
 
+
 watcher
 .on('ready', () => log('Initial scan complete. Ready for changes'))
 .on('addDir', path => addDir(path))
@@ -45,11 +46,13 @@ function addDir(changedPath) {
     log(`Addition detected: Folder ${changedPath} has been added`);
     let otherPlayer = getPathToOtherPlayer(changedPath);
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
-    const pathToTargetOtherPlayer = path.join(pathToRepo, convertToTargetPath(otherPlayer))
+    const pathToTargetOtherPlayer = path.join(pathToWatch, otherSaveFolder)
 
     log('Attempting to copy over to ' + pathToTarget);
 
     fs.cpSync(changedPath, pathToTarget, {recursive: true});
+    fs.cpSync(changedPath, pathToTargetOtherPlayer, {recursive: true});
+
     syncChanges()
 }
 
@@ -66,17 +69,22 @@ function addFile(changedPath) {
 
     fs.copyFileSync(changedPath, pathToTarget)
     fs.copyFileSync(changedPath, pathToTargetOtherPlayer)
+
+    syncChanges()
 }
 
 function fileChange(changedPath) {
     log(`Change detected: File ${changedPath} has been changed`);
+    const filename = path.basename(changedPath);
     let otherPlayer = getPathToOtherPlayer(changedPath);
 
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
-    const pathToTargetOtherPlayer = path.join(pathToRepo, convertToTargetPath(otherPlayer))
+    const pathToTargetOtherPlayer = path.join(pathToWatch, otherSaveFolder, filename)
     log('Attempting to copy over to ' + pathToTarget);
 
     fs.copyFileSync(changedPath, pathToTarget)
+    fs.copyFileSync(changedPath, pathToTargetOtherPlayer)
+    
     syncChanges()
 }
 
