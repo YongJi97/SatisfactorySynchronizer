@@ -135,7 +135,7 @@ function syncToLocal() {
 
 function massCopy() {
     let mySave = pathToSyncedSave + mySaveFolder;
-    let otherSave = pathToSyncedSave + pathToSyncedSave
+    let otherSave = pathToSyncedSave + otherSaveFolder
     log("Copying from " + mySave + " to " + otherSave);
 
 }
