@@ -88,7 +88,15 @@ function syncBetweenPlayerFolders(originalPath) {
     let splitPath = path.dirname(originalPath).split('\\')
     splitPath.pop();
     splitPath.push(otherSaveFolder);
-    log(splitPath)
+    splitPath.push(filename);
+    let resolvePath = splitPath.join()
+    log(resolvePath)
+    return resolvePath;
+}
+
+function getOtherPlayersFolder(originalPath) {
+
+
 }
 
 async function syncChanges() {
