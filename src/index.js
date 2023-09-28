@@ -69,8 +69,8 @@ function addFile(changedPath) {
     fs.copyFileSync(changedPath, pathToTarget)
     
     log("also copy to " + pathToTargetOtherPlayer);
-    fs.copyFileSync(changedPath, pathToTargetOtherPlayer)
     fs.closeSync(fs.openSync(pathToTargetOtherPlayer, 'w'));
+    fs.copyFileSync(changedPath, pathToTargetOtherPlayer)
 
     syncChanges()
 }
