@@ -46,11 +46,12 @@ function addDir(changedPath) {
     log(`Addition detected: Folder ${changedPath} has been added`);
     let otherPlayer = getPathToOtherPlayer(changedPath);
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
+
     const pathToTargetOtherPlayer = path.join(pathToWatch, otherSaveFolder)
-
+    
     log('Attempting to copy over to ' + pathToTarget);
-
     fs.cpSync(changedPath, pathToTarget, {recursive: true});
+    log('also attempting to copy over to ' + pathToTargetOtherPlayer);
     fs.cpSync(changedPath, pathToTargetOtherPlayer, {recursive: true});
 
     syncChanges()
@@ -62,13 +63,13 @@ function addFile(changedPath) {
     let otherPlayer = getPathToOtherPlayer(changedPath);
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
     const pathToTargetOtherPlayer = path.join(pathToWatch, otherSaveFolder, filename)
-    log("also copy to " + pathToTargetOtherPlayer);
     log('Attempting to copy over to ' + pathToTarget);
     fs.closeSync(fs.openSync(pathToTarget, 'w'));
-    fs.closeSync(fs.openSync(pathToTargetOtherPlayer, 'w'));
-
     fs.copyFileSync(changedPath, pathToTarget)
+    
+    log("also copy to " + pathToTargetOtherPlayer);
     fs.copyFileSync(changedPath, pathToTargetOtherPlayer)
+    fs.closeSync(fs.openSync(pathToTargetOtherPlayer, 'w'));
 
     syncChanges()
 }
@@ -80,11 +81,12 @@ function fileChange(changedPath) {
 
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
     const pathToTargetOtherPlayer = path.join(pathToWatch, otherSaveFolder, filename)
-    log('Attempting to copy over to ' + pathToTarget);
-
-    fs.copyFileSync(changedPath, pathToTarget)
-    fs.copyFileSync(changedPath, pathToTargetOtherPlayer)
     
+    log('Attempting to copy over to ' + pathToTarget);
+    fs.copyFileSync(changedPath, pathToTarget)
+    log("also copy to " + pathToTargetOtherPlayer);
+    fs.copyFileSync(changedPath, pathToTargetOtherPlayer)
+
     syncChanges()
 }
 
