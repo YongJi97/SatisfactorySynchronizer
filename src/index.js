@@ -134,8 +134,9 @@ function syncToLocal() {
 }
 
 function massCopy() {
-    let mySave = pathToSyncedSave + mySaveFolder;
-    let otherSave = pathToSyncedSave + otherSaveFolder
+    let mySave = path.join(pathToSyncedSave, mySaveFolder);
+    let otherSave = path.join(pathToSyncedSave, otherSaveFolder)
     log("Copying from " + mySave + " to " + otherSave);
+    fs.cpSync(mySave, otherSave, {recursive: true});
 
 }
