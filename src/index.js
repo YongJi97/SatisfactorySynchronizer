@@ -89,7 +89,7 @@ function syncBetweenPlayerFolders(originalPath) {
     splitPath.pop();
     splitPath.push(otherSaveFolder);
     splitPath.push(filename);
-    let resolvePath = splitPath.join()
+    let resolvePath = splitPath.join("\\")
     log(resolvePath)
     return resolvePath;
 }
