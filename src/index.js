@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const simpleGit = require('simple-git')();
 const os = require('os');
+const {execSync} = require('child_process');
 
 const yongji = '76561198214145843';
 const kevin = '76561198083081162';
@@ -33,7 +34,8 @@ const watcher = chokidar.watch(pathToWatch, {
 
 console.log("Syncing any changes from other players");
 simpleGit.pull();
-
+execSync('sleep 2');
+syncToLocal();
 
 watcher
 .on('ready', () => log('Initial scan complete. Ready for changes'))
@@ -121,4 +123,12 @@ async function syncChanges() {
         .add('../.')
         .commit("sync")
         .push();
+}
+
+function syncToLocal() {
+    let localPath = pathToSyncedSave;
+    let localappdata = path.join(local, gameSaveFiles)
+    log("Copying from " + localPath + " to " + localappdata);
+    fs.cpSync(localPath,localappdata, {recursive: true});
+
 }
