@@ -22,6 +22,7 @@ const watcher = chokidar.watch(pathToWatch, {
       },
 });
 
+console.log("Syncing any changes from other players");
 simpleGit.pull();
 
 watcher
