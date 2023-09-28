@@ -123,11 +123,13 @@ async function syncChanges() {
         .add('../.')
         .commit("sync")
         .push();
+    log('Syncing to the cloud complete');
 }
 
 async function gitPull() {
-    console.log("Syncing any changes from other players");
+    log("Syncing any changes from other players");
     await simpleGit.pull();
+    log('Syncing from the cloud complete');
 }
 
 function syncToLocal() {
