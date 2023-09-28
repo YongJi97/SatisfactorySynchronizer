@@ -35,6 +35,7 @@ watcher
 function addDir(changedPath) {
     log(`Addition detected: Folder ${changedPath} has been added`);
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
+    log('Attempting to copy over to ' + pathToTarget);
 
     fs.cpSync(changedPath, pathToTarget, {recursive: true});
     syncChanges()
@@ -42,8 +43,8 @@ function addDir(changedPath) {
 
 function addFile(changedPath) {
     log(`Addition detected: File ${changedPath} has been added`);
-    log('Attempting to copy over to ' + pathToSave);
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
+    log('Attempting to copy over to ' + pathToTarget);
 
     fs.closeSync(fs.openSync(pathToTarget, 'w'));
 
@@ -53,8 +54,8 @@ function addFile(changedPath) {
 
 function fileChange(changedPath) {
     log(`Change detected: File ${changedPath} has been changed`);
-    log('Attempting to copy over to ' + '../' + convertToTargetPath(changedPath));
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
+    log('Attempting to copy over to ' + pathToTarget);
 
     fs.copyFileSync(changedPath, pathToTarget)
     syncChanges()
