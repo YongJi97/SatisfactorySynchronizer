@@ -54,7 +54,7 @@ function addFile(changedPath) {
     log(`Addition detected: File ${changedPath} has been added`);
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
     log('Attempting to copy over to ' + pathToTarget);
-
+    syncBetweenPlayerFolders(changedPath);
     fs.closeSync(fs.openSync(pathToTarget, 'w'));
 
     fs.copyFileSync(changedPath, pathToTarget)
@@ -83,8 +83,10 @@ function getParentPath(str) {
     return str.substring(0, str.lastIndexOf("/"));
 }
 
-function syncBetweenPlayerFolders() {
-
+function syncBetweenPlayerFolders(originalPath) {
+    let filename = path.basename(originalPath);
+    let splitPath = path.dirname(originalPath).split('\\').pop();
+    log(splitPath)
 }
 
 async function syncChanges() {
