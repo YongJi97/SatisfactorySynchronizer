@@ -15,7 +15,7 @@ const log = console.log.bind(console);
 let local = process.env.LOCALAPPDATA
 const gameSaveFiles = "FactoryGame/Saved/SaveGames"
 const pathToSyncedSave = "../Saved/SaveGames"
-
+const saveFolders = 'Saved/SaveGames'
 const pathToWatch = path.join(local, gameSaveFiles);
 const pathToSave = path.join(__dirname, '..')
 const pathToPerson = path.join(pathToSave, otherSaveFolder);
@@ -48,7 +48,7 @@ function addDir(changedPath) {
     let otherPlayer = getPathToOtherPlayer(changedPath);
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
 
-    const pathToTargetOtherPlayer = path.join(pathToRepo, otherSaveFolder, filename)
+    const pathToTargetOtherPlayer = path.join(pathToRepo, saveFolders, otherSaveFolder, filename)
     
     log('Attempting to copy over to ' + pathToTarget);
     fs.cpSync(changedPath, pathToTarget, {recursive: true});
@@ -63,7 +63,7 @@ function addFile(changedPath) {
     const filename = path.basename(changedPath);
     let otherPlayer = getPathToOtherPlayer(changedPath);
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
-    const pathToTargetOtherPlayer = path.join(pathToRepo, otherSaveFolder, filename)
+    const pathToTargetOtherPlayer = path.join(pathToRepo, saveFolders, otherSaveFolder, filename)
     log('Attempting to copy over to ' + pathToTarget);
     fs.closeSync(fs.openSync(pathToTarget, 'w'));
     fs.copyFileSync(changedPath, pathToTarget)
@@ -81,7 +81,7 @@ function fileChange(changedPath) {
     let otherPlayer = getPathToOtherPlayer(changedPath);
 
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
-    const pathToTargetOtherPlayer = path.join(pathToRepo, otherSaveFolder, filename)
+    const pathToTargetOtherPlayer = path.join(pathToRepo, saveFolders, otherSaveFolder, filename)
     
     log('Attempting to copy over to ' + pathToTarget);
     fs.copyFileSync(changedPath, pathToTarget)
