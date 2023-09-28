@@ -22,7 +22,7 @@ const watcher = chokidar.watch(pathToWatch, {
       },
 });
 
-await simpleGit.pull();
+simpleGit.pull();
 
 watcher
 .on('ready', () => log('Initial scan complete. Ready for changes'))
