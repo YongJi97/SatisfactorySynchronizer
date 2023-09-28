@@ -123,7 +123,7 @@ async function syncChanges() {
     await simpleGit
         .add('../.')
         .commit("sync")
-        .push('origin','mass-copy');
+        .push();
 }
 
 function syncToLocal() {
