@@ -2,7 +2,6 @@ const chokidar = require('chokidar');
 const fs = require('fs');
 const path = require('path');
 const simpleGit = require('simple-git')();
-simpleGit().clean(simpleGit.CleanOptions.FORCE);
 
 const log = console.log.bind(console);
 
@@ -37,6 +36,7 @@ function addDir(changedPath) {
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
 
     fs.cpSync(changedPath, pathToTarget, {recursive: true});
+    syncChanges()
 }
 
 function addFile(changedPath) {
@@ -47,6 +47,7 @@ function addFile(changedPath) {
     fs.closeSync(fs.openSync(pathToTarget, 'w'));
 
     fs.copyFileSync(changedPath, pathToTarget)
+    syncChanges()
 }
 
 function fileChange(changedPath) {
@@ -55,6 +56,7 @@ function fileChange(changedPath) {
     const pathToTarget = path.join(pathToRepo, convertToTargetPath(changedPath))
 
     fs.copyFileSync(changedPath, pathToTarget)
+    syncChanges()
 }
 
 function convertToTargetPath(relativePath) {
@@ -62,7 +64,7 @@ function convertToTargetPath(relativePath) {
     for(let i = 0; i < 6; i++){
         toArray.shift();
     }
-
+    
     return toArray.join('');
 }
 
@@ -70,9 +72,9 @@ function getParentPath(str) {
     return str.substring(0, str.lastIndexOf("/"));
 }
 
-function syncChanges() {
-    simpleGit
+async function syncChanges() {
+    await simpleGit
         .add('../.')
         .commit("sync")
-        .push('origin', 'master');
+        .push();
 }
