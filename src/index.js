@@ -129,8 +129,9 @@ async function syncChanges() {
 function syncToLocal() {
     let localPath = pathToSyncedSave;
     let localappdata = path.join(local, gameSaveFiles)
-    log("Copying from " + localPath + " to " + localappdata);
-    fs.cpSync(localPath,localappdata, {recursive: true});
+    log(path.resolve(localPath));
+    log("Copying from " + path.resolve(localPath) + " to " + localappdata);
+    fs.cpSync(path.resolve(localPath), localappdata, {recursive: true});
 }
 
 function massCopy() {
