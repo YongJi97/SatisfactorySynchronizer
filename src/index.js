@@ -9,6 +9,7 @@ const yongji = '76561198214145843';
 const kevin = '76561198083081162';
 const machineID = path.basename(os.homedir());
 
+const mySaveFolder = machineID.toLowerCase() === 'kisuna' ? yongji : kevin;
 const otherSaveFolder = machineID.toLowerCase() === 'kisuna' ? kevin : yongji;
 
 const log = console.log.bind(console);
@@ -55,7 +56,7 @@ function addDir(changedPath) {
     log('Attempting to copy over to ' + pathToTarget);
     fs.cpSync(changedPath, pathToTarget, {recursive: true});
     log('also attempting to copy over to ' + pathToTargetOtherPlayer);
-    fs.cpSync(changedPath, pathToTargetOtherPlayer, {recursive: true});
+    massCopy()
 
     syncChanges()
 }
@@ -71,8 +72,8 @@ function addFile(changedPath) {
     fs.copyFileSync(changedPath, pathToTarget)
     
     log("also copy to " + pathToTargetOtherPlayer);
-    fs.closeSync(fs.openSync(pathToTargetOtherPlayer, 'w'));
-    fs.copyFileSync(changedPath, pathToTargetOtherPlayer)
+    massCopy()
+
 
     syncChanges()
 }
@@ -88,7 +89,7 @@ function fileChange(changedPath) {
     log('Attempting to copy over to ' + pathToTarget);
     fs.copyFileSync(changedPath, pathToTarget)
     log("also copy to " + pathToTargetOtherPlayer);
-    fs.copyFileSync(changedPath, pathToTargetOtherPlayer)
+    massCopy()
 
     syncChanges()
 }
@@ -122,7 +123,7 @@ async function syncChanges() {
     await simpleGit
         .add('../.')
         .commit("sync")
-        .push();
+        .push('origin','mass-copy');
 }
 
 function syncToLocal() {
@@ -130,5 +131,11 @@ function syncToLocal() {
     let localappdata = path.join(local, gameSaveFiles)
     log("Copying from " + localPath + " to " + localappdata);
     fs.cpSync(localPath,localappdata, {recursive: true});
+}
+
+function massCopy() {
+    let mySave = pathToSyncedSave + mySaveFolder;
+    let otherSave = pathToSyncedSave + pathToSyncedSave
+    log("Copying from " + mySave + " to " + otherSave);
 
 }
