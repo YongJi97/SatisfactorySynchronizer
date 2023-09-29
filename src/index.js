@@ -1,10 +1,8 @@
 const chokidar = require('chokidar');
 const fs = require('fs');
 const path = require('path');
-const simpleGit = require('simple-git')();
 const os = require('os');
 const childProcess = require('child_process');
-const { gitP } = require('simple-git');
 
 const yongji = '76561198214145843';
 const kevin = '76561198083081162';
