@@ -14,7 +14,7 @@ const mySaveFolder = machineID.toLowerCase() === 'kisuna' ? yongji : kevin;
 const otherSaveFolder = machineID.toLowerCase() === 'kisuna' ? kevin : yongji;
 
 const log = console.log.bind(console);
-const debug = console.debug.bind(console);
+console.debug = ()=>{}
 
 let local = process.env.LOCALAPPDATA
 const gameSaveFiles = "FactoryGame/Saved/SaveGames"
@@ -23,7 +23,7 @@ const saveFolders = 'Saved/SaveGames'
 const pathToWatch = path.join(local, gameSaveFiles);
 const pathToSave = path.join(__dirname, '..')
 const pathToPerson = path.join(pathToSave, otherSaveFolder);
-log(pathToPerson)
+// log(pathToPerson)
 
 const pathToRepo = path.join(local, 'FactoryGame', 'SatisfactorySynchronizer');
 
@@ -103,13 +103,7 @@ function getPathToOtherPlayer(originalPath) {
 }
 
 async function syncChanges() {
-    log('Syncing changes to github')
-    // await simpleGit
-    //     .add('../.')
-    //     .commit("sync")
-    //     .push();
-
-
+    log('Executing git push')
 
     childProcess.execSync("git add ../.")
     childProcess.execSync("git commit -m \"new changes\"")
@@ -119,22 +113,22 @@ async function syncChanges() {
 }
 
 async function gitPull() {
-    debug("start 1")
-
+    console.debug("start 1")
+    log("Executing git pull")
     const gitPull = childProcess.execSync("git pull");
     log(gitPull.toString());
     
-    debug("end 1")
+    console.debug("end 1")
 }
 
 async function syncToLocal() {
-    debug("start 2")
+    console.debug("start 2")
     let localPath = pathToSyncedSave;
     let localappdata = path.join(local, gameSaveFiles)
     log(path.resolve(localPath));
     log("Copying from " + path.resolve(localPath) + " to " + localappdata);
     fs.cpSync(path.resolve(localPath), localappdata, {recursive: true, force: true});
-    debug("end 2")
+    console.debug("end 2")
 }
 
 function massCopy() {
@@ -153,7 +147,7 @@ async function main() {
 }
 
 async function startWatch(){ 
-    debug("start 3")
+    console.debug("start 3")
     const watcher = chokidar.watch(pathToWatch, {
         ignoreInitial: true,
         cwd: __dirname,
@@ -170,5 +164,5 @@ async function startWatch(){
     .on('add', path => addFile(path))
     .on('error', error => log(`Watcher error: ${error}`))
     
-    debug("end 3")
+    console.debug("end 3")
 }
