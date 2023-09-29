@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chokidar": "^3.5.3",
-    "simple-git": "^3.20.0"
+    "chokidar": "^3.5.3"
   }
 }
