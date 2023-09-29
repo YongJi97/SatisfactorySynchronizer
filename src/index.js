@@ -148,7 +148,7 @@ async function startWatch(){
         ignoreInitial: true,
         cwd: __dirname,
         awaitWriteFinish: {
-            stabilityThreshold: 2000,
+            stabilityThreshold: 30000,
             pollInterval: 100
           },
     });
