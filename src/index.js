@@ -24,25 +24,9 @@ const pathToSave = path.join(__dirname, '..')
 const pathToPerson = path.join(pathToSave, otherSaveFolder);
 log(pathToPerson)
 
-const pathToRepo = path.join(local, 'FactoryGame', 'SatisfactorySynchronizer')
-const watcher = chokidar.watch(pathToWatch, {
-    ignoreInitial: true,
-    cwd: __dirname,
-    awaitWriteFinish: {
-        stabilityThreshold: 2000,
-        pollInterval: 100
-      },
-});
+const pathToRepo = path.join(local, 'FactoryGame', 'SatisfactorySynchronizer');
 
-gitPull();
-syncToLocal();
-
-watcher
-.on('ready', () => log('Initial scan complete. Ready for changes'))
-// .on('addDir', path => addDir(path))
-.on('change', path => fileChange(path))
-.on('add', path => addFile(path))
-.on('error', error => log(`Watcher error: ${error}`))
+(async ()=> { await main() })();
 
 function addDir(changedPath) {
     log(`Addition detected: Folder ${changedPath} has been added`);
@@ -146,4 +130,25 @@ function massCopy() {
     log("Copying from " + mySave + " to " + otherSave);
     fs.cpSync(mySave, otherSave, {recursive: true});
 
+}
+
+async function main() {
+    const watcher = chokidar.watch(pathToWatch, {
+        ignoreInitial: true,
+        cwd: __dirname,
+        awaitWriteFinish: {
+            stabilityThreshold: 2000,
+            pollInterval: 100
+          },
+    });
+    
+    await gitPull();
+    await syncToLocal();
+    
+    watcher
+    .on('ready', () => log('Initial scan complete. Ready for changes'))
+    // .on('addDir', path => addDir(path))
+    .on('change', path => fileChange(path))
+    .on('add', path => addFile(path))
+    .on('error', error => log(`Watcher error: ${error}`))
 }
