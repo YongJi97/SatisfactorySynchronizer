@@ -109,7 +109,7 @@ async function syncChanges() {
     childProcess.execSync("git commit -m \"new changes\"")
     childProcess.execSync("git push")
 
-    log('Syncing to the cloud complete');
+    log('git push complete');
 }
 
 async function gitPull() {
@@ -125,7 +125,6 @@ async function syncToLocal() {
     console.debug("start 2")
     let localPath = pathToSyncedSave;
     let localappdata = path.join(local, gameSaveFiles)
-    log(path.resolve(localPath));
     log("Copying from " + path.resolve(localPath) + " to " + localappdata);
     fs.cpSync(path.resolve(localPath), localappdata, {recursive: true, force: true});
     console.debug("end 2")
@@ -134,9 +133,8 @@ async function syncToLocal() {
 function massCopy() {
     let mySave = path.join(pathToSyncedSave, mySaveFolder);
     let otherSave = path.join(pathToSyncedSave, otherSaveFolder)
-    log("Mass copying from " + mySave + " to " + otherSave);
+    log("Mass copying to other players from " + mySave + " to " + otherSave);
     fs.cpSync(mySave, otherSave, {recursive: true});
-
 }
 
 async function main() {
