@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const simpleGit = require('simple-git')();
 const os = require('os');
-const {execSync} = require('child_process');
+const childProcess = require('child_process');
 const { gitP } = require('simple-git');
 
 const yongji = '76561198214145843';
@@ -103,25 +103,42 @@ function getPathToOtherPlayer(originalPath) {
 
 async function syncChanges() {
     log('Syncing changes to github')
-    await simpleGit
-        .add('../.')
-        .commit("sync")
-        .push();
+    // await simpleGit
+    //     .add('../.')
+    //     .commit("sync")
+    //     .push();
+
+
+
+    childProcess.execSync("git add ../.")
+    childProcess.execSync("git commit -m \"new changes\"")
+    childProcess.execSync("git push")
+
     log('Syncing to the cloud complete');
 }
 
 async function gitPull() {
-    log("Syncing any changes from other players");
-    await simpleGit.pull();
-    log('Syncing from the cloud complete');
+    log("start 1")
+    // log("Syncing any changes from other players");
+    // await simpleGit.pull();
+    // log('Syncing from the cloud complete');
+
+    const git = childProcess.exec("git pull");
+    // log('pulled');
+    git.stdout.on("data", data => {
+       console.log(`Git replied: ${data}`);
+    });
+    log("end 1")
 }
 
-function syncToLocal() {
+async function syncToLocal() {
+    log("start 2")
     let localPath = pathToSyncedSave;
     let localappdata = path.join(local, gameSaveFiles)
     log(path.resolve(localPath));
     log("Copying from " + path.resolve(localPath) + " to " + localappdata);
     fs.cpSync(path.resolve(localPath), localappdata, {recursive: true, force: true});
+    log("end 2")
 }
 
 function massCopy() {
@@ -133,6 +150,14 @@ function massCopy() {
 }
 
 async function main() {
+    await gitPull();
+    await syncToLocal();
+    await startWatch();
+
+}
+
+async function startWatch(){ 
+    log("start 3")
     const watcher = chokidar.watch(pathToWatch, {
         ignoreInitial: true,
         cwd: __dirname,
@@ -141,14 +166,13 @@ async function main() {
             pollInterval: 100
           },
     });
-    
-    await gitPull();
-    await syncToLocal();
-    
+
     watcher
     .on('ready', () => log('Initial scan complete. Ready for changes'))
     // .on('addDir', path => addDir(path))
     .on('change', path => fileChange(path))
     .on('add', path => addFile(path))
     .on('error', error => log(`Watcher error: ${error}`))
+    
+    log("end 3")
 }
