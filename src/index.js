@@ -14,6 +14,7 @@ const mySaveFolder = machineID.toLowerCase() === 'kisuna' ? yongji : kevin;
 const otherSaveFolder = machineID.toLowerCase() === 'kisuna' ? kevin : yongji;
 
 const log = console.log.bind(console);
+const debug = console.debug.bind(console);
 
 let local = process.env.LOCALAPPDATA
 const gameSaveFiles = "FactoryGame/Saved/SaveGames"
@@ -38,7 +39,7 @@ function addDir(changedPath) {
     
     log('Attempting to copy over to ' + pathToTarget);
     fs.cpSync(changedPath, pathToTarget, {recursive: true});
-    log('also attempting to copy over to ' + pathToTargetOtherPlayer);
+    // log('also attempting to copy over to ' + pathToTargetOtherPlayer);
     massCopy()
 
     syncChanges()
@@ -54,7 +55,7 @@ function addFile(changedPath) {
     fs.closeSync(fs.openSync(pathToTarget, 'w'));
     fs.copyFileSync(changedPath, pathToTarget)
     
-    log("also copy to " + pathToTargetOtherPlayer);
+    // log("also copy to " + pathToTargetOtherPlayer);
     massCopy()
 
 
@@ -71,7 +72,7 @@ function fileChange(changedPath) {
     
     log('Attempting to copy over to ' + pathToTarget);
     fs.copyFileSync(changedPath, pathToTarget)
-    log("also copy to " + pathToTargetOtherPlayer);
+    // log("also copy to " + pathToTargetOtherPlayer);
     massCopy()
 
     syncChanges()
@@ -118,33 +119,28 @@ async function syncChanges() {
 }
 
 async function gitPull() {
-    log("start 1")
-    // log("Syncing any changes from other players");
-    // await simpleGit.pull();
-    // log('Syncing from the cloud complete');
+    debug("start 1")
 
-    const git = childProcess.exec("git pull");
-    // log('pulled');
-    git.stdout.on("data", data => {
-       console.log(`Git replied: ${data}`);
-    });
-    log("end 1")
+    const gitPull = childProcess.execSync("git pull");
+    log(gitPull.toString());
+    
+    debug("end 1")
 }
 
 async function syncToLocal() {
-    log("start 2")
+    debug("start 2")
     let localPath = pathToSyncedSave;
     let localappdata = path.join(local, gameSaveFiles)
     log(path.resolve(localPath));
     log("Copying from " + path.resolve(localPath) + " to " + localappdata);
     fs.cpSync(path.resolve(localPath), localappdata, {recursive: true, force: true});
-    log("end 2")
+    debug("end 2")
 }
 
 function massCopy() {
     let mySave = path.join(pathToSyncedSave, mySaveFolder);
     let otherSave = path.join(pathToSyncedSave, otherSaveFolder)
-    log("Copying from " + mySave + " to " + otherSave);
+    log("Mass copying from " + mySave + " to " + otherSave);
     fs.cpSync(mySave, otherSave, {recursive: true});
 
 }
@@ -157,7 +153,7 @@ async function main() {
 }
 
 async function startWatch(){ 
-    log("start 3")
+    debug("start 3")
     const watcher = chokidar.watch(pathToWatch, {
         ignoreInitial: true,
         cwd: __dirname,
@@ -174,5 +170,5 @@ async function startWatch(){
     .on('add', path => addFile(path))
     .on('error', error => log(`Watcher error: ${error}`))
     
-    log("end 3")
+    debug("end 3")
 }
