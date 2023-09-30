@@ -153,14 +153,20 @@ async function syncToLocal() {
 
 function massCopy() {
   let mySave = path.join(pathToSyncedSave, mySaveFolder);
-//   let otherSave = path.join(pathToSyncedSave, otherSaveFolder);
 
   let otherPlayersFolder = fs.readdirSync(pathToSyncedSave);
-  for(let save of otherPlayersFolder) {
-    log("Mass copying to other players from " + mySave + " to " + save);
-    fs.cpSync(mySave, save, { recursive: true });
-  }
 
+  let blueprintFolderIdx = otherPlayersFolder.indexOf('blueprints');
+  let myFolderIdx = otherPlayersFolder.indexOf(mySaveFolder);
+
+  otherPlayersFolder.splice(blueprintFolderIdx, 1);
+  otherPlayersFolder.splice(myFolderIdx, 1);
+
+  for(let save of otherPlayersFolder) {
+    let otherSave = path.join(pathToSyncedSave, save);
+    log("Mass copying to other players from " + mySave + " to " + otherSave);
+    fs.cpSync(mySave, otherSave, { recursive: true });
+  }
 }
 
 async function main() {
