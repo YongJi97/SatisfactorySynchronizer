@@ -12,7 +12,7 @@
     ```
 4. Go to your satisfactory shortcut and change the `Target` link to point to `StartSatisafactory.bat`
 5. Run your newly created shortcut.
-6. Upon exiting Satisfactory, wait 30 seconds for it to sync any changes to the repo before closing the command window.
+6. Upon exiting Satisfactory, wait 30 seconds for it to sync any last changes to the repo before closing the command window.
 
 ### Explanation
 1. On start of your script, it will pull down and overwrite your local satisfactory save files with the ones from the repo.
