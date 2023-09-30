@@ -2,16 +2,17 @@
 
 ### How to use
 1. Run `npm install`
-2. Create a StartSatisafactory.bat file with the following script and modify it to your locations
+2. Create your save folder ID at the `./Saved/SaveGames/` location
+3. Create a StartSatisafactory.bat file with the following script and modify it to your locations
     ```
     start "Satisfactory" "C:\Program Files (x86)\Steam\steamapps\common\Satisfactory\FactoryGame.exe"
     cd "C:\Users\{username}\AppData\Local\FactoryGame\SatisfactorySynchronizer\src"
     node "index.js"
     @pause
     ```
-3. Go to your satisfactory shortcut and change the `Target` link to point to `StartSatisafactory.bat`
-4. Run your newly created shortcut.
-5. Upon exiting Satisfactory, wait 30 seconds for it to sync any changes to the repo before closing the command window.
+4. Go to your satisfactory shortcut and change the `Target` link to point to `StartSatisafactory.bat`
+5. Run your newly created shortcut.
+6. Upon exiting Satisfactory, wait 30 seconds for it to sync any changes to the repo before closing the command window.
 
 ### Explanation
 1. On start of your script, it will pull down and overwrite your local satisfactory save files with the ones from the repo.
