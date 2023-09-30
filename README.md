@@ -24,4 +24,3 @@
 1. Restrict only one person to be using the script at any given time.
 2. Auto close the script window upon exiting Satisfactory given that it does the last save upload.
 3. Instead of overwriting the entire directory while saving new changes to other players, only sync files that are modified.
-4. 
