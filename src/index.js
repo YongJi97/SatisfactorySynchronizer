@@ -153,9 +153,14 @@ async function syncToLocal() {
 
 function massCopy() {
   let mySave = path.join(pathToSyncedSave, mySaveFolder);
-  let otherSave = path.join(pathToSyncedSave, otherSaveFolder);
-  log("Mass copying to other players from " + mySave + " to " + otherSave);
-  fs.cpSync(mySave, otherSave, { recursive: true });
+//   let otherSave = path.join(pathToSyncedSave, otherSaveFolder);
+
+  let otherPlayersFolder = fs.readdirSync(pathToSyncedSave);
+  for(let save of otherPlayersFolder) {
+    log("Mass copying to other players from " + mySave + " to " + save);
+    fs.cpSync(mySave, save, { recursive: true });
+  }
+
 }
 
 async function main() {
