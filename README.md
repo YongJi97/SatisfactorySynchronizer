@@ -10,7 +10,7 @@
     node "index.js"
     @pause
     ```
-4. Go to your satisfactory shortcut and change the `Target` link to point to `StartSatisafactory.bat`
+4. Create `StartSatisafactory.bat` shortcut to your desktop.
 5. Run your newly created shortcut.
 6. Upon exiting Satisfactory, wait 30 seconds for it to sync any last changes to the repo before closing the command window.
 
